@@ -1,5 +1,5 @@
 """
-Advent of Code besvarelser 202X dag X
+Advent of Code besvarelser 2024 dag 01
 """
 from pathlib import Path
 
