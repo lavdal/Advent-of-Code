@@ -2,6 +2,7 @@
 Advent of Code besvarelser 2024 dag 01
 """
 from pathlib import Path
+from collections import Counter
 
 class Solver:
     def read_data(self, input_path):
@@ -14,10 +15,34 @@ class Solver:
         self.verbose = verbose
             
     def opgave1(self):
+        left_values = []
+        right_values = []
+        for line in self.data:
+            l_val, r_val = line.split()
+            left_values.append(int(l_val))
+            right_values.append(int(r_val))
+        left_values.sort()
+        right_values.sort()
+        differences = [abs(r-l) for l, r in zip(left_values, right_values)]
+        return sum(differences)
+
         return None         
         
     def opgave2(self):
-        return None
+        left_values = []
+        right_values = []
+        for line in self.data:
+            l_val, r_val = line.split()
+            left_values.append(int(l_val))
+            right_values.append(int(r_val))
+        left_values.sort()
+        right_values.sort()
+
+        final_values = 0
+        right_count = Counter(right_values)
+        for val in left_values:
+            final_values += val*right_count[val]
+        return final_values
         
     
 if __name__ == "__main__":
