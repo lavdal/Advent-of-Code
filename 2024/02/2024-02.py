@@ -16,19 +16,6 @@ class Solver:
             if all([abs(x) <= 3 for x in diffs]):
                 return True
         return False
-    
-            
-        print(temp_lines)
-    def safe_if_dampened(self, line: list[int]) -> bool:
-        temp_lines = []
-        for elem in line:
-            temp_line = line.copy()
-            temp_line.remove(elem)
-            temp_lines.append(temp_line)
-        for newline in temp_lines:
-            if self.is_safe(newline):
-                return True
-        return False
 
     def opgave1(self) -> None:
         safe_reports = 0
@@ -40,10 +27,11 @@ class Solver:
     def opgave2(self) -> None:
         safe_reports = 0
         for line in self.data:
-            if self.is_safe(line):
-                safe_reports += 1
-            elif self.safe_if_dampened(line):
-                safe_reports += 1
+            for idx in range(len(line)):
+                dampened_line = line[:idx]+line[idx+1:]
+                if self.is_safe(dampened_line):
+                    safe_reports += 1
+                    break
         print(f"Opgave 2: {safe_reports=}")
         
             
