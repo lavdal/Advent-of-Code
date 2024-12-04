@@ -55,20 +55,32 @@ def opgave1(pattern: str, arr: list) -> int:
     
     return matches
 
+def check_corners(start: tuple, arr: list) -> list:
+    x,y = start
+    trues = ["MS", "SM"]
+    if 0 < x < len(arr[0]) and 0 < y < len(arr):
+        try:
+            string1 = arr[x-1][y-1] + arr[x+1][y+1]
+            string2 = arr[x-1][y+1] + arr[x+1][y-1]
+            return string1 in trues and string2 in trues
+        except IndexError:
+            return False
+
 def opgave2(arr: list) -> int:
     matches = 0
     starts = find_start("A", arr)
     for start in starts:
-        x,y = start
-        if 0 < x < len(arr[0]) and 0 < y <len(arr):
-            print(start)
+        if check_corners(start, arr):
+            matches += 1
+    return matches
 
 
 
 if __name__ == "__main__":
-    TESTING = True
+    TESTING = False
     filename = "test_input.txt" if TESTING else "input.txt"
-    opgave1 = opgave1("XMAS", get_input(filename))
-    print(f"opgave 1: {opgave1}")
-    opgave2(get_input(filename))
+    opgave_1 = opgave1("XMAS", get_input(filename))
+    print(f"opgave 1: {opgave_1}")
+    opgave_2 = opgave2(get_input(filename))
+    print(f"opgave 2: {opgave_2}")
 
