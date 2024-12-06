@@ -3,12 +3,14 @@ from collections import namedtuple
 Position = namedtuple("Position", ["row", "column"])
     
 class Guard:
-    def __init__(self, start_pos: Position, dir: str, map: list) -> None:
+    def __init__(self, start_pos: Position, direction: str, map: list) -> None:
 
         self.start_pos = start_pos
-        self.visited = {self.start_pos}
+        self.visited = [self.start_pos]
         self.current_pos = self.start_pos
-        self.dir = dir
+        self.visited_pos = []
+        self.overlaps = []
+        self.direction = direction
         self.map = map
     
     def is_clear(self, pos: Position) -> bool:
@@ -28,7 +30,7 @@ class Guard:
         self.still_on_map = True
         self.new_map = self.map
         while self.still_on_map:
-            match self.dir:
+            match self.direction:
                 case "^":
                     next_pos = Position(self.current_pos.row -1, self.current_pos.column)
                 case ">":
@@ -38,40 +40,36 @@ class Guard:
                 case "<":
                     next_pos = Position(self.current_pos.row, self.current_pos.column -1)
                 case _:
-                    raise ValueError(f"forventede en retning ['^', '>', 'v','<'] men fik {self.dir}")
+                    raise ValueError(f"forventede en retning ['^', '>', 'v','<'] men fik {self.direction}")
             if self.is_clear(next_pos):
-                self.visited.add(next_pos)
-                self.new_map[self.current_pos.row][self.current_pos.column] = self.dir
+                if next_pos not in self.visited:
+                    self.visited.append(next_pos)
+                    self.visited_pos.append((next_pos, self.direction))
+                else:
+                    self.overlaps.append((next_pos, self.direction))
+                self.new_map[self.current_pos.row][self.current_pos.column] = self.direction
                 self.current_pos = next_pos
             else:
-                match self.dir:
+                match self.direction:
                     case "^":
-                        self.dir = ">"
+                        self.direction = ">"
                     case ">":
-                        self.dir = "v"
+                        self.direction = "v"
                     case "v":
-                        self.dir = "<"
+                        self.direction = "<"
                     case "<":
-                        self.dir = "^"
+                        self.direction = "^"
                     case _:
-                        raise ValueError(f"forventede en retning ['^', '>', 'v','<'] men fik {self.dir}")
+                        raise ValueError(f"forventede en retning ['^', '>', 'v','<'] men fik {self.direction}")
         
-        with open("output.txt", "w") as fout:
-            self.new_map[self.start_pos.row][self.start_pos.column] = "X"
-            for line in self.new_map:
-                fout.write("".join(line) + "\n")
-        check = []
-        for pos in self.visited:
-            if (pos.row, pos.column) not in check:
-                check.append((pos.row, pos.column))
-
         return len(self.visited)
     
-
+    def get_travels(self):
+        return self.visited_pos, self.overlaps
         
 
     def __str__(self):
-        return f"Guard at {self.current_pos} | dir: {self.dir}"
+        return f"Guard at {self.current_pos} | direction: {self.direction}"
     
 
 
@@ -86,8 +84,6 @@ class Solver:
     def _parse_input(self, path:str):
         with open(path, "r") as fin:
             self.lines = [[elem for elem in row.strip()] for row in fin.readlines()]
-            num_rows =  len(self.lines)
-            num_columns = len(self.lines[0])
 
             for rid, row in enumerate(self.lines):
                 for cid, element in enumerate(row):
@@ -100,8 +96,29 @@ class Solver:
         return guard.move()
     
     def opgave2(self):
-        result = 0
-        return result
+        guard = Guard(self.start, "^", self.lines)
+        guard.move()
+        travels, overlaps = guard.get_travels()
+        new_map = self.lines
+        possibles = 0
+        for pos, direction in overlaps:
+            # print("overlap")
+            old_dir = "!"
+            # print(pos)
+            for point, arrow in travels:
+                if point == pos:
+                    old_dir = arrow
+                    
+                    if direction == "^" and old_dir == ">" or direction == ">" and old_dir == "v" or direction == "v" and old_dir == "<" or direction == "<" and old_dir == "^":
+                        possibles +=1
+            
+            
+            new_map[pos.row][pos.column] = "?"
+
+        with open("output.txt", "w") as fout:
+            for line in new_map:
+                fout.write("".join(line) + "\n")
+        return possibles
 
 if __name__ == "__main__":
     # TEST
@@ -111,9 +128,9 @@ if __name__ == "__main__":
     test2 = Solver(True).opgave2()
     print(f"TEST 2: {test2}")
 
-    # SVAR
-    svar1 = Solver()
-    print(f"OPGAVE 1: {svar1.opgave1()}")
+    # # SVAR
+    # svar1 = Solver()
+    # print(f"OPGAVE 1: {svar1.opgave1()}")
     
     svar2 = Solver().opgave2()
     print(f"OPGAVE 2: {svar2}")
@@ -122,4 +139,7 @@ if __name__ == "__main__":
 Forsøg:
 Opgave 1:
     9136 - For høj
+    
+Opgave 2:
+        293 - for lav
 """
