@@ -96,6 +96,12 @@ class Solver:
         return guard.move()
     
     def opgave2(self):
+
+        """
+        skal ikke gå efter overlaps som i nedenstående.
+        men gå den originale path igennem og se om et højresving vil lede den tilbage
+        til denne lokation igen
+        """
         guard = Guard(self.start, "^", self.lines)
         guard.move()
         travels, overlaps = guard.get_travels()
