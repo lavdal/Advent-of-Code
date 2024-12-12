@@ -41,7 +41,7 @@ class Solver:
                 res = eval(temp)
                 
                 if res == calibration.ans:
-                    # print(f"{calibration.ans} true with {calibration.values} {combination}")
+                    print(f"{calibration.ans} true with {calibration.values} {combination}")
                     return True
         
         return False
@@ -57,8 +57,8 @@ class Solver:
             if self._passes_calibration(calibration):
                 passed_calibrations.append(calibration)
         
-        for calibration in passed_calibrations:
-            print(calibration)
+        # for calibration in passed_calibrations:
+        #     print(calibration)
 
         return sum([calibration.ans for calibration in passed_calibrations])
     
