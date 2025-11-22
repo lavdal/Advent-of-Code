@@ -37,7 +37,7 @@ class Solver:
             
 
 if __name__ == "__main__":
-    print(f"TEST:")
+    print("TEST:")
     Solver(r"test_data.txt")
-    print(f"\nANSWER")
+    print("\nANSWER")
     Solver(r"input.txt")

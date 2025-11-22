@@ -6,7 +6,6 @@ Created on Tue Dec  5 09:26:48 2023
 """
 from utils import open_input
 from dataclasses import dataclass
-from typing import List
 import re
 
 

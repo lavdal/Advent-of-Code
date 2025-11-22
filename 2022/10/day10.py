@@ -59,7 +59,7 @@ class solver:
         self.data = self.read_data()
         
         print(f"svaret på opgave 1 er: {self.solve1()}")
-        print(f"svaret på opgave 2 er:")
+        print("svaret på opgave 2 er:")
         self.solve2()
         
 

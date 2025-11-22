@@ -6,7 +6,6 @@ LAVET MED HJÆLP FRA ANDRES KODE:
     https://github.com/narimiran/AdventOfCode2022/blob/main/python/day07.py
 
 """
-import math
 from itertools import accumulate
 from collections import defaultdict
 

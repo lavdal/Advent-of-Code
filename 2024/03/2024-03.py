@@ -52,5 +52,5 @@ if __name__ == "__main__":
     # Solver(r"test_input.txt")
     # print("TEST2")
     # Solver(r"test_input2.txt")
-    print(f"\nANSWER")
+    print("\nANSWER")
     Solver(r"input.txt")

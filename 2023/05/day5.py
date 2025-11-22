@@ -5,7 +5,6 @@ Created on Tue Dec  5 12:49:19 2023
 @author: EBL
 """
 from utils import open_input
-import pandas as pd
 import re
 
 
