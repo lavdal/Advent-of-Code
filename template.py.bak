@@ -2,7 +2,6 @@
 Advent of Code besvarelser 202X dag X
 """
 from pathlib import Path
-import utils
 
 class Solver:
     def read_data(self, input_path):

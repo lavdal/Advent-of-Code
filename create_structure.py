@@ -3,13 +3,13 @@ from pathlib import Path
 from datetime import date
 from shutil import copy
 
-TEMPLATE = Path(r".\template.py")
+TEMPLATE = Path(r"./template.py")
 
 
 #læs argumenterne
 ap = ArgumentParser()
 ap.add_argument("day", type= int, help="Dagen som en int")
-ap.add_argument("-y", "--year")
+ap.add_argument("-y", "--year", help="året som int")
 
 args = ap.parse_args()
 
@@ -18,7 +18,8 @@ args = ap.parse_args()
 today = date.today()
 current_year = today.year if today.month == 12 else today.year -1
 
-year = args.year if args.year else current_year
+year = int(args.year) if args.year else current_year
+year = year + 2000 if year < 100 else year
 day = args.day
 
 
@@ -27,8 +28,8 @@ choice = input(f"Vil du oprette følgende dag {year} | {day}?\n")
 
 
 if choice.lower() == "j" or choice.lower() == "y":
-    testfil = Path(fr".\{year}\{day:02}\test_data.txt")
-    inputfil = Path(fr".\{year}\{day:02}\input.txt")
+    testfil = Path(fr"./{year}/{day:02}/test_data.txt")
+    inputfil = Path(fr"./{year}/{day:02}/input.txt")
     
     # hvis ikke mappen findes oprettes den
     testfil.parent.mkdir(exist_ok=True, parents=True)
@@ -44,7 +45,7 @@ if choice.lower() == "j" or choice.lower() == "y":
             pass
     
     # opret dagens fil
-    py_file = Path(fr".\{year}\{day:02}\{day}.py")
+    py_file = Path(fr"./{year}/{day:02}/{day}.py")
     if not py_file.exists():
         print(f"opretter {py_file}")
         copy(TEMPLATE, py_file)

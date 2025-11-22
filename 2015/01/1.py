@@ -1,6 +1,7 @@
 """
-Advent of Code besvarelser 1212 dag 4"""
+Advent of Code besvarelser 2015 dag 1"""
 from pathlib import Path
+import utils
 
 class Solver:
     def read_data(self, input_path):
