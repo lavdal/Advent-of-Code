@@ -72,6 +72,8 @@ def solve2() -> None:
 
 if __name__ == "__main__":
     if TEST:
-        print(f"[red]{'#'*24}\n#[/red] [magenta1]Running in test mode[/magenta1] [red]#\n{'#'*24}[/red]")
+        print(
+            f"[red]{'#' * 24}\n#[/red] [magenta1]Running in test mode[/magenta1] [red]#\n{'#' * 24}[/red]"
+        )
     solve1()
     solve2()

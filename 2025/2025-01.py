@@ -38,7 +38,9 @@ def opgave_1() -> None:
         positions.append(new_pos)
     answer = Counter(positions)
 
-    print(f"[bold blue]OPGAVE1\n[/bold blue][green]    Den rammer 0 [/green] {answer[0]} [green] gange [/green]")
+    print(
+        f"[bold blue]OPGAVE1\n[/bold blue][green]    Den rammer 0 [/green] {answer[0]} [green] gange [/green]"
+    )
 
 
 # Løs opgave 2
@@ -63,11 +65,13 @@ def opgave_2() -> None:
             small_passes += full_rotations
             while current_pos < 0:
                 small_passes += 1
-                current_pos +=100
+                current_pos += 100
             if current_pos == 0:
                 small_passes += 1
         passes_zero += small_passes
-    print(f"[bold blue]OPGAVE2\n[/bold blue][green]    Den rammer 0 [/green] {passes_zero} [green] gange [/green]")
+    print(
+        f"[bold blue]OPGAVE2\n[/bold blue][green]    Den rammer 0 [/green] {passes_zero} [green] gange [/green]"
+    )
 
 
 if __name__ == "__main__":
