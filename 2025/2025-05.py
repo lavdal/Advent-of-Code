@@ -1,6 +1,5 @@
 from rich import print
 from pathlib import Path
-from itertools import chain
 from tqdm import tqdm
 
 class Interval:
@@ -16,7 +15,7 @@ class Interval:
         else:
             return False
     
-    def combine(self, other) -> any:
+    def combine(self, other):
         if self.overlaps(other):
             new_start = min(self._beginning, other._beginning)
             new_end = max(self._end, other._end)
@@ -24,7 +23,17 @@ class Interval:
         else:
             raise ValueError("no overlap")
 
+    def combine_many(self, others:list):
+        beginnings = [x._beginning for x in others]
+        beginnings.append(self._beginning)
 
+        new_start = min(beginnings)
+
+        ends = [x._end for x in others]
+        ends.append(self._end)
+        new_end = max(ends)
+
+        return Interval(new_start, new_end)
     def __len__(self) -> int:
         return self._end - self._beginning+1
 
@@ -82,36 +91,23 @@ def part_2() -> None:
     ranges = [Interval(s,e) for s,e in parse_input2()]
     parsed_ranges = [ranges[0]]
     ranges = ranges[1:]
-    while ranges:
-        for interval in ranges[1:]:
-            print(f"[red]{interval}[/red]")
-            replaced=False
-            for comp in parsed_ranges.copy():
-                print(f"--checking against {comp}")
-                if interval.overlaps(comp):
-                    print("---Overlap found")
-                    print(f"---Old Parsed ranges\n{parsed_ranges}")
-                    parsed_ranges.remove(comp)
-                    print(f"---new Parsed ranges\n{parsed_ranges}")
-                    ranges.append(interval.combine(comp))
-                    replaced = True
-                    break
-
-            if not replaced:
-                parsed_ranges.append(interval)
-
-
-
-    print("RESULT")
-    for i in parsed_ranges:
-        print(i)
-        print(len(i))
-    print(sum([len(i) for i in parsed_ranges]))
-
+    for r in ranges:
+        overlappers = [i for i in parsed_ranges if r.overlaps(i)]
+        if overlappers:
+            r = r.combine_many(overlappers)
+            for elem in overlappers:
+                parsed_ranges.remove(elem)
+            
+        parsed_ranges.append(r)
+    
+    valid_IDs = sum(len(r) for r in parsed_ranges)
+    print(
+        f"[bold bright_cyan]Day 5, Part 2:[/bold bright_cyan]\n\tThere are {valid_IDs} Valid ID's"
+    )
 
 
 if __name__ == "__main__":
-    TEST = True
+    TEST = False
     input_path = (
         Path(r"./inputs/2025-05-example.txt") if TEST else Path(r"./inputs/2025-05.txt")
     )
