@@ -20,6 +20,7 @@ def part_1() -> None:
         f"[bold green]Day 4, Part 1:[/bold green] {ans} rolls can be accessed by forklift"
     )
 
+
 def part_2() -> None:
     with open(input_path, "r") as fin:
         ans = 0
@@ -31,16 +32,18 @@ def part_2() -> None:
             for point in grid.iter_grid():
                 if grid.get_point(point) == "@":
                     neighbor_values = [
-                        grid.get_point(neighbor) for neighbor in grid.get_neighbors(point)
+                        grid.get_point(neighbor)
+                        for neighbor in grid.get_neighbors(point)
                     ]
                     if sum([1 for x in neighbor_values if x == "@"]) < 4:
                         ans += 1
                         grid.set_point(point, ".")
-                        changed+=1
+                        changed += 1
 
     print(
         f"[bold green]Day 4, Part 2:[/bold green] {ans} rolls can be removed by forklift"
     )
+
 
 if __name__ == "__main__":
     TEST = False
