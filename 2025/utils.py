@@ -60,6 +60,15 @@ class Grid:
             raise TypeError(
                 f"Point must be either a Point objekt og at Tuple(x, y), point was {type(point)}"
             )
+    def find_one(self, value: str | int) -> Point| None:
+        """
+        finds first occurance of value in grid, returns Point if found else None
+        """
+        for y, row in enumerate(self.array):
+            for x, char in enumerate(row):
+                if char == value:
+                    return Point(x,y)
+            return None
 
     def is_point_equal(self, point: Point, value: str | int) -> bool:
         return self._array[point.y][point.x] == value
@@ -68,7 +77,32 @@ class Grid:
         return 0 <= point.x < self.width and 0 <= point.y < self.height
 
     def set_point(self, point: Point, value: str | int) -> None:
-        self._array[point.y][point.x] = value
+        # print(f"replacing {point} with a {value}")
+        row = list((self.array[point.y]))
+        row[point.x] = value
+        self._array[point.y] = "".join(row)
+
+        # self.print_grid()
+
+    def get_neighbor_dict( self, point: Point, diagonals: bool = True) -> dict[str, str | int]:
+        neigbor_coords = {
+            "N": (0,-1),
+            "S": (0, 1),
+            "W": (-1,0),
+            "E": (1,0),
+            "NW": (-1,-1),
+            "NE": (1,-1),
+            "SW": (-1,1),
+            "SE": (1,1)
+        }
+        return_dict = {}
+
+        for name, coord in neigbor_coords.items():
+            (dx, dy) = coord
+            neighbor_point = Point(point.x+dx, point.y+dy)
+            return_dict[name] = neighbor_point if self.in_bounds(neighbor_point) else None
+        
+        return return_dict
 
     def get_neighbors(self, point: Point, diagonals: bool = True) -> list[Point]:
         neighbors = []
