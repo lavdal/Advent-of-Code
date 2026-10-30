@@ -7,7 +7,7 @@ class Walker:
 		self.current_facing = facing
 		self.current_x = start_x
 		self.current_y = start_y
-		self.path = []
+		self.path = [(start_x, start_y)]
 		self.dir_dict = {"N":{"R":"E", "L":"W"},
 			"E":{"R":"S", "L":"N"},
 			"S":{"R":"W", "L":"E"},
@@ -16,29 +16,35 @@ class Walker:
 	def take_step(self, direction:str, distance: int) -> None:
 		# print(f"Old dir {self.current_facing} turning {direction}")
 		self.current_facing = self.dir_dict[self.current_facing][direction]
-		# print(f"New dir {self.current_facing}")
+		self.current_location = self.path[-1]
+
 		match self.current_facing:
 			case "N":
-				self.current_y += distance
+				for i in range(1, distance+1):
+					self.path.append((self.current_location[0], self.current_location[1]+i))
 			case "S":
-				self.current_y -= distance
+				for i in range(1, distance+1):
+					self.path.append((self.current_location[0], self.current_location[1]-i))
 			case "E":
-				self.current_x += distance
+				for i in range(1, distance+1):
+					self.path.append((self.current_location[0]+i, self.current_location[1]))
 			case "W":
-				self.current_x -= distance
-		current_location = (self.current_x, self.current_y)
-		self.path.append(current_location)
+				for i in range(1, distance+1):
+					self.path.append((self.current_location[0]-i, self.current_location[1]))
+		# print(self.path)
 		#print(f"now positioned at {current_location}")
 
+
 	def get_distance(self) -> int:
-		return abs(self.current_x) + abs(self.current_y)
+		x, y = self.path[-1]
+		return abs(x) + abs(y)
 
 	def find_first_duplicate(self) -> int:
-		print(self.path)
+		# print(self.path)
 		for idx in range(len(self.path)):
 			if self.path[idx] in self.path[idx+1:]:
-				print(self.path[idx])
-				return abs(self.path[idx][0])+abs(self.path[idx][1])
+				x,y = self.path[idx]
+				return abs(x) + abs(y)
 
 def main(fin):
 	# read file
